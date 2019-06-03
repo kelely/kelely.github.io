@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="目标我们先来看看本文希望达成怎样的目标:  使用 Hexo 静态页面生成的博客系统搭建个人博客站点。 使用 Github 的私有仓库作为博客站点的草稿箱，草稿箱内的所有数据不提供公开访问。这样我们可以使用 Github 的 Iuuse 管理工具进行写作的计划安排以及参考资料的收集，同时也可以使用 Pull Request 进行实际的写作管理。 使用 Github Pages 的公开仓库作为博客站点">
+<meta name="keywords" content="Hexo,CI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点">
+<meta property="og:url" content="https://douxiaoshen.online/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds.html">
+<meta property="og:site_name" content="兜小小小神">
+<meta property="og:description" content="目标我们先来看看本文希望达成怎样的目标:  使用 Hexo 静态页面生成的博客系统搭建个人博客站点。 使用 Github 的私有仓库作为博客站点的草稿箱，草稿箱内的所有数据不提供公开访问。这样我们可以使用 Github 的 Iuuse 管理工具进行写作的计划安排以及参考资料的收集，同时也可以使用 Pull Request 进行实际的写作管理。 使用 Github Pages 的公开仓库作为博客站点">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ps96jl7l3.bkt.clouddn.com/kelely-blog-ci-flow.jpg">
+<meta property="og:updated_time" content="2019-06-03T06:09:50.105Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点">
+<meta name="twitter:description" content="目标我们先来看看本文希望达成怎样的目标:  使用 Hexo 静态页面生成的博客系统搭建个人博客站点。 使用 Github 的私有仓库作为博客站点的草稿箱，草稿箱内的所有数据不提供公开访问。这样我们可以使用 Github 的 Iuuse 管理工具进行写作的计划安排以及参考资料的收集，同时也可以使用 Pull Request 进行实际的写作管理。 使用 Github Pages 的公开仓库作为博客站点">
+<meta name="twitter:image" content="http://ps96jl7l3.bkt.clouddn.com/kelely-blog-ci-flow.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://douxiaoshen.online/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点 | 兜小小小神</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?40d4cfb782047429d59e4ec6f8cf9dd8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">兜小小小神</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">非著名程序猿</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://douxiaoshen.online/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="兜小神">
+      <meta itemprop="description" content="随便记录一些容易忘记的事情">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536601280165&di=5022d9a19b9e04762e1d846b0232cd6e&imgtype=0&src=http%3A%2F%2Fp1.gexing.com%2Ftouxiang%2F20121225%2F1728%2F50d971d6c1142_200x200_3.jpg%3Frecache%3D20131108">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="兜小小小神">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-29 14:05:47" itemprop="dateCreated datePublished" datetime="2019-05-29T14:05:47+08:00">2019-05-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-03 14:09:50" itemprop="dateModified" datetime="2019-06-03T14:09:50+08:00">2019-06-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/practical-skills/" itemprop="url" rel="index"><span itemprop="name">实用技巧</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds.html" class="leancloud_visitors" data-flag-title="使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>我们先来看看本文希望达成怎样的目标:</p>
+<ol>
+<li>使用 <a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a> 静态页面生成的博客系统搭建个人博客站点。</li>
+<li>使用 <a href="https://www.github.com/" target="_blank" rel="noopener">Github</a> 的私有仓库作为博客站点的草稿箱，草稿箱内的所有数据不提供公开访问。这样我们可以使用 Github 的 Iuuse 管理工具进行写作的计划安排以及参考资料的收集，同时也可以使用 Pull Request 进行实际的写作管理。</li>
+<li>使用 <a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages</a> 的公开仓库作为博客站点的对外服务站点。</li>
+<li>整个博客发布流程完全使用免费工具(<a href="https://dev.azure.com/" target="_blank" rel="noopener">Azure Devops</a>、<a href="https://www.travis-ci.org/" target="_blank" rel="noopener">Travis CI</a>)全自动化完成。</li>
+</ol>
+<a id="more"></a>
+<p>完成后的整个构建发布过程如下：<br><img src="http://ps96jl7l3.bkt.clouddn.com/kelely-blog-ci-flow.jpg" alt="博客系统自动化构建发布流水线"></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>本地环境<ul>
+<li>NodeJS</li>
+<li>Git</li>
+</ul>
+</li>
+<li>Github 账号一枚，同时创建一个个人授权访问码(<strong>PAT</strong>:<code>Personal access tokens</code>)，该授权码需要具备 <code>repo:public_repo</code> 访问权限且<strong>只要这个权限</strong>。</li>
+<li>Azure Devops 账号一枚。</li>
+</ol>
+<h2 id="建立-Github-Repository"><a href="#建立-Github-Repository" class="headerlink" title="建立 Github Repository"></a>建立 Github Repository</h2><p>我们需要建立两个仓库：</p>
+<ul>
+<li>一个用于储存、管理博客文章草稿状态的私有仓库，不对外公开访问，在这个仓库中完成博客的日常写作，一旦完成一篇文章，我们就将该文章推送到该私有库的 <code>master</code> 分支，后续所有构建和发布环节均为自动完成。同样的，我们对博客进行的配置和设置也应该在这个私有库中进行，配置完成后由自动化构建过程发布到博客站点。</li>
+<li>一个用于对外提供访问的公开仓库，使用 <code>Github Pages</code> 服务，可以很轻松的实现全静态站点，同时也可以绑定自定义域名等。根据 <code>Github Pages</code> 的使用规范要求，该仓库的命名必须是 <code>&lt;github用户名&gt;.github.io</code>，如兜小神的 <code>Github</code> 用户名是 <strong>kelely</strong>，这个仓库的名称就是 <strong>kelely</strong>.github.io，只有按照这个要求命名，才可以绑定到顶级域名上，否则就只能通过域名+子目录的形式访问。具体说明这里不展开说了，<a href="https://pages.github.com/" target="_blank" rel="noopener">官方介绍</a>中有详细的说明。当我们的私有库中 master 产生了新的提交，最终会将最新的构建结果发布到该仓库的 <code>master</code> 分支，实现对外的访问。</li>
+</ul>
+<h3 id="建立私有草稿仓库"><a href="#建立私有草稿仓库" class="headerlink" title="建立私有草稿仓库"></a>建立私有草稿仓库</h3><p>先在Github上建立一个私有仓库，仓库名字可以根据个人的喜好来定，为了便于介绍，本文中以仓库名为: <strong>your-blog-private-repo</strong> 举例说明, 这个名字会出现在后续中的多个配置，所以请一定要确保后续配置中的名字和这个名字匹配。</p>
+<p>建立这个私有仓库时，不需要进行初始化，接下来我们马上在本地使用 Hexo 的模板项目来完成仓库的初始化:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 未安装 hexo，需要先安装 hexo 工具</span></span><br><span class="line">&gt; npm install -g hexo-cli</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Hexo 的模板项目初始化</span></span><br><span class="line">&gt; hexo init your-blog-private-repo</span><br><span class="line">&gt; <span class="built_in">cd</span> your-blog-private-repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交到 Github 的私有仓库中，注意仓库地址修改为实际地址</span></span><br><span class="line">&gt; git init</span><br><span class="line">&gt; git add .</span><br><span class="line">&gt; git commit -m <span class="string">"hexo init"</span></span><br><span class="line">&gt; git remote add origin git@github.com:kelely/your-blog-private-repo.git</span><br><span class="line">&gt; git push -u origin master</span><br></pre></td></tr></table></figure></p>
+<p>操作完成后，可以在 Github 上看到私有仓库中 master 分支已经建立起来了。</p>
+<h3 id="建立公开博客站点仓库"><a href="#建立公开博客站点仓库" class="headerlink" title="建立公开博客站点仓库"></a>建立公开博客站点仓库</h3><p>根据 <code>Github Pages</code> 的使用规范要求，创建一个名为 <code>&lt;github用户名&gt;.github.io</code> 的公开仓库，创建时顺便进行初始化，直接生成 master 分支，也可以手动初始化，总之目的就是要产生一个 master 分支，如果是个空仓库，在后续同步到该仓库的过程是会有问题的。</p>
+<h2 id="配置-CI-流程"><a href="#配置-CI-流程" class="headerlink" title="配置 CI 流程"></a>配置 CI 流程</h2><p>由于我们采用了私有仓库进行博客文章的写作和管理，而目前市面上支持对 Github 私有仓库进行自动化构建的 CI 工具几乎没有，得益于微软爸爸收购 Github 后的深度融合，微软旗下的 Azure Devops 对 Github 的私有仓库支持自动化构建了，所以我们在这里选用 Azure Devops 来进行自动化构建，在本人实践的过程中，发现一个小问题，那就是 Azure Devops Pipelines 在构建过程中无法获取代码仓库中源地址是 Github 的 Sub-Modules，而 Hexo 使用主题的最佳实践方式就是使用 Sub-Modules，所以这里整个 CI 流程不得不采取一个妥协的策略：使用 Azure 将私有库中的 master 分支同步到公开库中的临时镜像分支 mirror，再使用 Travis CI 对 mirror 分支进行构建，构建的最终工件由 Travis CI 推送到 公开库中的 master 分支，同时由 Travis CI 将公开库中的临时镜像分支删除。如果你不使用 Sub-Modules 的方式安装部署 Hexo 主题，也可以只用 Azure Devops Pipelines 完成整个构建过程。</p>
+<h3 id="用-Azure-DevOps-Pipelines-在公开库上建立镜像分支"><a href="#用-Azure-DevOps-Pipelines-在公开库上建立镜像分支" class="headerlink" title="用 Azure DevOps Pipelines 在公开库上建立镜像分支"></a>用 Azure DevOps Pipelines 在公开库上建立镜像分支</h3><p>先准备好一份 Azure DevOps Pipelines 构建流程配置文件，配置比较简单，这里提供一个样板:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># azure-pipelines.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">trigger:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"><span class="attr">pool:</span></span><br><span class="line"><span class="attr">  vmImage:</span> <span class="string">'Ubuntu-16.04'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  - group:</span> <span class="string">'KELELY-BLOG'</span>    <span class="comment"># Azure DevOps 配置变量分组名称</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">GIT_COMMENT_USER_NAME</span></span><br><span class="line"><span class="attr">    value:</span> <span class="string">'兜小神'</span>          <span class="comment"># 代码提交日志中显示的用户名</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">GIT_COMMENT_USER_EMAIL</span></span><br><span class="line"><span class="attr">    value:</span> <span class="string">'kelely@vip.qq.com'</span>  <span class="comment"># 代码提交日志中显示的邮箱</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">GITHUB_USER_NAME</span></span><br><span class="line"><span class="attr">    value:</span> <span class="string">'kelely'</span>          <span class="comment"># 修改为 Github 用户名</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">GITHUB_PAGES_REPO_BRANCH_NAME</span></span><br><span class="line"><span class="attr">    value:</span> <span class="string">'mirror'</span>          <span class="comment"># 公开库中的镜像分支名称，最好是一个不存在的分支</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">GITHUB_PAGES_REPO_NAME</span></span><br><span class="line"><span class="attr">    value:</span> <span class="string">'$(GITHUB_USER_NAME).github.io'</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">GITHUB_PAGES_REPO_ADDRESS</span></span><br><span class="line"><span class="attr">    value:</span> <span class="string">'https://$(GITHUB_TOKEN)@github.com/$(GITHUB_USER_NAME)/$(GITHUB_PAGES_REPO_NAME).git'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line"><span class="attr">  - script:</span> <span class="string">|</span></span><br><span class="line"><span class="string">      git config --global user.name "$(GIT_COMMENT_USER_NAME)"</span></span><br><span class="line"><span class="string">      git config --global user.email "$(GIT_COMMENT_USER_EMAIL)"</span></span><br><span class="line"><span class="string">      git checkout master</span></span><br><span class="line"><span class="string">      git remote add target $(GITHUB_PAGES_REPO_ADDRESS)</span></span><br><span class="line"><span class="string">      git push -f -v target master:$(GITHUB_PAGES_REPO_BRANCH_NAME)</span></span><br><span class="line"><span class="string"></span><span class="attr">    displayName:</span> <span class="string">master</span> <span class="string">push</span> <span class="string">to</span> <span class="string">$(GITHUB_PAGES_REPO_NAME)/$(GITHUB_PAGES_REPO_BRANCH_NAME)</span></span><br></pre></td></tr></table></figure></p>
+<p>将 <code>azure-pipelines.yml</code> 放到你的私有库的根目录中，记得一定要修改文件中定义的变量值，改成自己的真实配置。这个配置文件中同时使用了配置分组 <code>KELELY-BLOG</code>，通常我们将需要保密的配置参数配置在 Azure 中，而不是定义在配置文件中，防止出现安全问题。</p>
+<p>然后登录到 Azure Devops，建立一个新项目，名字随意，自己喜欢就好，在这个项目内进行 Pipelines 的配置。<br>添加一个变量分组: <code>Pipelines</code> &gt; <code>Library</code> &gt; <code>+ Variable group</code><br>分组名可以自由指定，但一定要确认和 azure-pipelines.yml 文件中的变量分组名一致，否则构建过程会找不到对应的变量，分组内建立一个变量名为 <code>GITHUB_TOKEN</code> 的环境变量，变量值是准备阶段创建好的 <code>Github PAT</code>，构建过程中需要通过这个授权码在公开仓库中建立镜像分支。</p>
+<p>创建一个构建过程： <code>Pipelines</code> &gt; <code>Builds</code> &gt; <code>New Pipeline</code><br>选择 Github(YAML)，然后登录Github账号进行授权，选择前面已经建立好的私有仓库：<code>your-blog-private-repo</code>，<br>Azure 会自动找到根目录下的 azure-pipelines.yml，进行构建，如果没找到这个文件，请确认这个文件是否已经推送到私有仓库的根目录。<br>现在可以直接运行一次同步构建了，验证配置是否正确，构建完成后，应该可以在 <code>&lt;github用户名&gt;.github.io</code> 这个公开仓库中看到创建的 <code>mirror</code> 分支，并且是私有库 <code>master</code> 分支的镜像。</p>
+<p>Azure 配置完成。</p>
+<h3 id="使用-Travis-CI-进行博客站点的自动化构建"><a href="#使用-Travis-CI-进行博客站点的自动化构建" class="headerlink" title="使用 Travis CI 进行博客站点的自动化构建"></a>使用 Travis CI 进行博客站点的自动化构建</h3><p>在私有仓库根目录添加 Travis CI 配置文件 <code>.travis.yml</code>，内容如下:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .travis.yml</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span> <span class="string">stable</span></span><br><span class="line"></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">mirror</span>  <span class="comment"># 只监测 Azure 同步过程中建立的镜像分支</span></span><br><span class="line"></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line"><span class="attr">  global:</span></span><br><span class="line"><span class="attr">    - GIT_COMMENT_USER_NAME:</span> <span class="string">'兜小神'</span>  <span class="comment"># 代码提交日志中显示的用户名</span></span><br><span class="line"><span class="attr">    - GIT_COMMENT_USER_EMAIL:</span> <span class="string">'kelely@vip.qq.com'</span>  <span class="comment"># 代码提交日志中显示的邮箱</span></span><br><span class="line"><span class="attr">    - GH_REF:</span> <span class="string">'github.com/kelely/kelely.github.io.git'</span>   <span class="comment"># 构建产出物推送的目标仓库地址</span></span><br><span class="line"></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line"><span class="attr">  directories:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="attr">git:</span></span><br><span class="line"><span class="attr">  depth:</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">before_install:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">-g</span> <span class="string">hexo-cli</span></span><br><span class="line"></span><br><span class="line"><span class="attr">install:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">hexo</span> <span class="string">g</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">push</span> <span class="string">origin</span> <span class="bullet">--delete</span> <span class="string">mirror</span>    <span class="comment"># 删除 Azure 同步过程中建立的镜像分支</span></span><br><span class="line"></span><br><span class="line"><span class="attr">after_script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">cd</span> <span class="string">./public</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">init</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">config</span> <span class="string">user.name</span> <span class="string">"$&#123;GIT_COMMENT_USER_NAME&#125;"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">config</span> <span class="string">user.email</span> <span class="string">"$&#123;GIT_COMMENT_USER_EMAIL&#125;"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">add</span> <span class="string">.</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">commit</span> <span class="bullet">-m</span> <span class="string">"Travis CI Auto Builder"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">push</span> <span class="bullet">--force</span> <span class="bullet">--quiet</span> <span class="string">"https://$&#123;GITHUB_TOKEN&#125;@$&#123;GH_REF&#125;"</span> <span class="attr">master:master</span></span><br></pre></td></tr></table></figure></p>
+<p>同样的，记得一定要修改文件中定义的变量值，改成自己的真实配置。<br>将此文件推送到私有库之后，稍稍等待几分钟，就可以在 <code>&lt;github用户名&gt;.github.io</code> 库的 mirror 分支中看到这个文件。</p>
+<p>使用 Github 账号登录到 <a href="https://www.travis-ci.org/" target="_blank" rel="noopener">Travis CI</a>，选择 <code>&lt;github用户名&gt;.github.io</code> 仓库进行构建配置，在构建配置中建立一个变量名为 <code>GITHUB_TOKEN</code> 的环境变量，变量值是准备阶段创建好的 <code>Github PAT</code>，构建过程中需要通过这个授权码将构建成果物推送到 公开仓库中的 <code>master</code> 分支。<br>配置完成后运行一次构建，构建成功后即可打开 <a href="https://kelely.github.io/" target="_blank" rel="noopener">https://kelely.github.io/</a> 看到博客页面。 </p>
+<h2 id="最后测试一下"><a href="#最后测试一下" class="headerlink" title="最后测试一下"></a>最后测试一下</h2><p>让我们最后测试一下，验证本文的目标是否达成，我们在本地写一篇新博客，并推送到私有库的 master 分支，测试一下整个流程是否畅通：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; hexo new <span class="built_in">test</span></span><br><span class="line">&gt; git add .</span><br><span class="line">&gt; git commit -m <span class="string">"测试"</span></span><br><span class="line">&gt; git push -u origin master</span><br></pre></td></tr></table></figure></p>
+<p>不出意外的话，几分钟之后可以看到这篇新的博客被发布到 <a href="https://kelely.github.io/。" target="_blank" rel="noopener">https://kelely.github.io/。</a></p>
+<p>Enjoy It。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>兜小神</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://douxiaoshen.online/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds.html" title="使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点">https://douxiaoshen.online/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+            <a href="/tags/CI/" rel="tag"># CI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/what-is-new-angular-8-0.html" rel="prev" title="Angular 8.0 有什么新功能?">
+                Angular 8.0 有什么新功能? <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536601280165&di=5022d9a19b9e04762e1d846b0232cd6e&imgtype=0&src=http%3A%2F%2Fp1.gexing.com%2Ftouxiang%2F20121225%2F1728%2F50d971d6c1142_200x200_3.jpg%3Frecache%3D20131108" alt="兜小神">
+            
+              <p class="site-author-name" itemprop="name">兜小神</p>
+              <div class="site-description motion-element" itemprop="description">随便记录一些容易忘记的事情</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://y2zz.info/" title="https://y2zz.info/" rel="noopener" target="_blank">Y2zz</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立-Github-Repository"><span class="nav-number">3.</span> <span class="nav-text">建立 Github Repository</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立私有草稿仓库"><span class="nav-number">3.1.</span> <span class="nav-text">建立私有草稿仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立公开博客站点仓库"><span class="nav-number">3.2.</span> <span class="nav-text">建立公开博客站点仓库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-CI-流程"><span class="nav-number">4.</span> <span class="nav-text">配置 CI 流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用-Azure-DevOps-Pipelines-在公开库上建立镜像分支"><span class="nav-number">4.1.</span> <span class="nav-text">用 Azure DevOps Pipelines 在公开库上建立镜像分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Travis-CI-进行博客站点的自动化构建"><span class="nav-number">4.2.</span> <span class="nav-text">使用 Travis CI 进行博客站点的自动化构建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后测试一下"><span class="nav-number">5.</span> <span class="nav-text">最后测试一下</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">兜小神</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">12k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">11 分钟</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+
+
+  <script>
+    var _mtac = {};
+    (function() {
+      var mta = document.createElement("script");
+      mta.src = "https://pingjs.qq.com/h5/stats.js";
+      mta.setAttribute("name", "MTAH5");
+      mta.setAttribute("sid", "500641720");
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(mta, s);
+    })();
+  </script>
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66008202";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script src="//cdn.bootcss.com/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script src="//cdn.bootcss.com/velocity/1.2.1/velocity.ui.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'S2EtOuSnjKdkba30qgoaFA9v-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'S2EtOuSnjKdkba30qgoaFA9v-gzGzoHsz',
+                'X-LC-Key': '209BiTzJXHlUQOokG7Cj7q7c',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

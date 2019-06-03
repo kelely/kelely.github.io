@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="注1: 此文为英文材料翻译，英文原文链接：https://blog.ninja-squad.com/2019/05/29/what-is-new-angular-8.0/   注2: 文中的我均指代英文原作者本人。   Angular 8.0.0 正式发布了!  首先，请允许我做一次个人公告：Angular 的核心团队正在努力吸收更多来自于社区的开发人员，我现在正式以合作者的身份成为了 Angu">
+<meta name="keywords" content="Angular,Angular 8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular 8.0 有什么新功能?">
+<meta property="og:url" content="https://douxiaoshen.online/2019/05/what-is-new-angular-8-0.html">
+<meta property="og:site_name" content="兜小小小神">
+<meta property="og:description" content="注1: 此文为英文材料翻译，英文原文链接：https://blog.ninja-squad.com/2019/05/29/what-is-new-angular-8.0/   注2: 文中的我均指代英文原作者本人。   Angular 8.0.0 正式发布了!  首先，请允许我做一次个人公告：Angular 的核心团队正在努力吸收更多来自于社区的开发人员，我现在正式以合作者的身份成为了 Angu">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.ninja-squad.com/assets/images/angular.png">
+<meta property="og:image" content="https://blog.ninja-squad.com/assets/images/2019-05-14/bazel.svg">
+<meta property="og:updated_time" content="2019-06-03T06:09:50.105Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular 8.0 有什么新功能?">
+<meta name="twitter:description" content="注1: 此文为英文材料翻译，英文原文链接：https://blog.ninja-squad.com/2019/05/29/what-is-new-angular-8.0/   注2: 文中的我均指代英文原作者本人。   Angular 8.0.0 正式发布了!  首先，请允许我做一次个人公告：Angular 的核心团队正在努力吸收更多来自于社区的开发人员，我现在正式以合作者的身份成为了 Angu">
+<meta name="twitter:image" content="https://blog.ninja-squad.com/assets/images/angular.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://douxiaoshen.online/2019/05/what-is-new-angular-8-0">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Angular 8.0 有什么新功能? | 兜小小小神</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?40d4cfb782047429d59e4ec6f8cf9dd8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">兜小小小神</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">非著名程序猿</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://douxiaoshen.online/2019/05/what-is-new-angular-8-0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="兜小神">
+      <meta itemprop="description" content="随便记录一些容易忘记的事情">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536601280165&di=5022d9a19b9e04762e1d846b0232cd6e&imgtype=0&src=http%3A%2F%2Fp1.gexing.com%2Ftouxiang%2F20121225%2F1728%2F50d971d6c1142_200x200_3.jpg%3Frecache%3D20131108">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="兜小小小神">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Angular 8.0 有什么新功能?
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-30 15:08:05" itemprop="dateCreated datePublished" datetime="2019-05-30T15:08:05+08:00">2019-05-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-03 14:09:50" itemprop="dateModified" datetime="2019-06-03T14:09:50+08:00">2019-06-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/英译中/" itemprop="url" rel="index"><span itemprop="name">英译中</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2019/05/what-is-new-angular-8-0.html" class="leancloud_visitors" data-flag-title="Angular 8.0 有什么新功能?">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>注1: 此文为英文材料翻译，英文原文链接：<a href="https://blog.ninja-squad.com/2019/05/29/what-is-new-angular-8.0/" target="_blank" rel="noopener">https://blog.ninja-squad.com/2019/05/29/what-is-new-angular-8.0/</a></p>
+</blockquote>
+<blockquote>
+<p>注2: 文中的<strong>我</strong>均指代英文<a href="https://blog.ninja-squad.com/" target="_blank" rel="noopener">原作者本人</a>。</p>
+</blockquote>
+<hr>
+<p>Angular 8.0.0 正式发布了!</p>
+<p><img src="https://blog.ninja-squad.com/assets/images/angular.png" alt="Angular"></p>
+<p>首先，请允许我做一次个人公告：Angular 的核心团队正在努力吸收更多来自于社区的开发人员，我现在正式以合作者的身份成为了 Angular 团队的一员。在 Angular 8.0 中，我贡献了相当多的代码 😊。</p>
+<p>这个版本主要是关于 Ivy 可能性的一些尝试，同时也包含了一些新特性和重大变化。因此，Angular 团队编写了一堆 <code>schematics</code>，希望这些工具可以帮你把繁重的工作简化得尽可能的简单。</p>
+<a id="more"></a>
+<h2 id="TypeScript-3-4"><a href="#TypeScript-3-4" class="headerlink" title="TypeScript 3.4"></a>TypeScript 3.4</h2><p>Angular 8.0 已经支持 TypeScript 3.4，甚至是必须使用它，所以你需要升级到 TypeScript 3.4。<br>你可以在微软官方博客上查看 <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-3-3/" target="_blank" rel="noopener">TypeScript 3.3</a> 和 <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-3-4/" target="_blank" rel="noopener">TypeScript 3.4</a> 之间有些什么新特性。</p>
+<h2 id="Ivy"><a href="#Ivy" class="headerlink" title="Ivy"></a>Ivy</h2><p>Ivy 显然是这个版本的重要的组成部分，为此团队在上个月花费了大量的精力。关于 Ivy 有很多内容可以介绍，因此我专门写了一篇<a href="https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/" target="_blank" rel="noopener">有关于 Ivy 的文章</a>。</p>
+<p>很重要的一点: Ivy 是 Angular 新启用的编译器(<code>compiler</code>)/运行时(<code>runtime</code>)。它将在未来给 Angular 带来非常酷的特性，但目前的重点是如何让现有的应用程序平滑升级。</p>
+<p>Angular 8.0 是第一个正式提供可选项切换到 Ivy 的版本。虽然现在这样做并没有一些实质性的好处，但是您可以借此机会尝试一下，看看您的应用程序中是否具备平滑升级到 Ivy 的可能性。因为在未来某个时间点，有可能在 v9 中，Ivy 将会成为默认提供的。因此，Angular 团队希望社区能够预料到这种转变并提供反馈，并且我们在 v9 之前可以关注到所有剩余的问题。</p>
+<p>我们在几个应用程序上尝试了它并且已经发现了一些问题，所以我们强烈建议不要盲目地在生产环境中使用它😄。</p>
+<p>当然，如果您想感受一下冒险精神，可以在 <code>angularCompilerOptions</code> 中添加 <code>&quot;enableIvy&quot;：true</code>，然后重新启动您的应用：它现在就已经使用 Ivy 了！ 查看<a href="https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/" target="_blank" rel="noopener">我们的文章</a>和<a href="https://angular.io/guide/ivy" target="_blank" rel="noopener">官方指南</a>以获取更多信息。</p>
+<h2 id="Bazel-support"><a href="#Bazel-support" class="headerlink" title="Bazel support"></a>Bazel support</h2><p>至于 Ivy，我们专门写了<a href="https://blog.ninja-squad.com/2019/05/14/build-your-angular-application-with-bazel/" target="_blank" rel="noopener">一篇关于如何使用新的 Bazel 构建 Angular 应用程序的文章</a>🛠。</p>
+<p><img src="https://blog.ninja-squad.com/assets/images/2019-05-14/bazel.svg" alt="Bazel"></p>
+<h2 id="Forms"><a href="#Forms" class="headerlink" title="Forms"></a>Forms</h2><h3 id="markAllAsTouched"><a href="#markAllAsTouched" class="headerlink" title="markAllAsTouched"></a>markAllAsTouched</h3><p>除了现有的<code>markAsDirty</code>，<code>markAsTouched</code>，<code>markAsPending</code>等等之外，<code>AbstractControl</code>类现在提供了一种新的方法:<code>markAllAsTouched</code>。由于<code>AbstractControl</code>是<code>FormGroup</code>，<code>FormControl</code>，<code>FormArray</code>的父类，因此该方法适用于所有响应式表单实体(<code>Reactive Form Entities</code>)。</p>
+<p>和<code>markAsTouched</code>一样，这个新方法将控件标记为<code>touched</code>，并同时对它所包含的所有子孙级控件生效。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">form.markAllAsTouched();</span><br></pre></td></tr></table></figure>
+<h3 id="FormArray-clear"><a href="#FormArray-clear" class="headerlink" title="FormArray.clear"></a>FormArray.clear</h3><p><code>FormArray</code>类现在提供了<code>clear</code>方法，以快速删除它包含的所有控件。在以前，您必须循环所有控件以逐个删除它们。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// `users` is initialized with 2 users</span></span><br><span class="line"><span class="keyword">const</span> users = fb.array([user1, user2]);</span><br><span class="line">users.clear();</span><br><span class="line"><span class="comment">// users is now empty</span></span><br></pre></td></tr></table></figure>
+<h2 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h2><h3 id="使用-import-语法的延迟加载"><a href="#使用-import-语法的延迟加载" class="headerlink" title="使用 import() 语法的延迟加载"></a>使用 import() 语法的延迟加载</h3><p>现在可以使用 TypeScript 中的 import() (在 <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-4.html" target="_blank" rel="noopener">TypeScript 2.4</a> 中引入)语法来声明路由的延迟加载。这是目前声明延迟加载路由的首选方式，而且不再推荐使用之前的字符串形式。此语法类似于 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank" rel="noopener">ECMAScript 标准</a>，Ivy 将仅支持此语法。</p>
+<p>因此，您可以将 <code>loadChildren</code> 的声明从：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loadChildren: <span class="string">'./admin/admin.module#AdminModule'</span></span><br></pre></td></tr></table></figure></p>
+<p>更改为:<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loadChildren: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./races/races.module'</span>).then(<span class="function"><span class="params">m</span> =&gt;</span> m.RacesModule)</span><br></pre></td></tr></table></figure></p>
+<p>CLI提供的 <code>schematic</code> 将自动为您迁移声明，所以如果您使用 <code>ng update @angular/cli</code>，这将会变得非常轻松。查看我们关于 <a href="https://blog.ninja-squad.com/2019/05/29/angular-cli-8.0/" target="_blank" rel="noopener">Angular CLI 8.0</a> 的文章，可以了解更多相关信息。</p>
+<h2 id="Location"><a href="#Location" class="headerlink" title="Location"></a>Location</h2><p>为了帮助大家从 AngularJS 升级，Angular 中的位置服务(<code>Location Services</code>)中增加了不少东西。</p>
+<p><code>PlatformLocation</code>现在提供了对<code>hostname</code>、<code>port</code>和<code>protocol</code>的访问，而新的<code>getState()</code>方法则允许获取<code>history.state</code>。 <code>MockPlatformLocation</code>可用于简化测试。如果你使用<code>ngUpgrade</code>，这一切都非常好用，否则你也可能不需要它。</p>
+<h2 id="Service-worker"><a href="#Service-worker" class="headerlink" title="Service worker"></a>Service worker</h2><h3 id="Registration-strategy"><a href="#Registration-strategy" class="headerlink" title="Registration strategy"></a>Registration strategy</h3><p>service worker 的注册方式有了一个新选项，允许指定何时进行注册。此前，service worker 始终在应用程序运行稳定后注册，以避免减缓应用程序的启动。但是，如果您在应用程序的引导程序上重复的启动异步任务（比如轮询过程），则应用程序永远不会进入稳定状态，因为只有在没有挂起的任务时，Angular会认为应用程序是稳定的。所以这会导致 service worker 永远无法注册，你必须手动处理它。现在，您可以使用新的 <code>registrationStrategy</code> 选项，让 Angular 来处理这个问题。有几个可选的值：</p>
+<ul>
+<li><code>registerWhenStable</code>，默认值, 就像上面说的那样。</li>
+<li><code>registerImmediately</code>，不等待应用程序稳定并立即注册 service worker</li>
+<li><code>registerDelay:$TIMEOUT</code> 等待 <code>$TIMEOUT</code> 毫秒之后立即注册</li>
+<li>一个返回 Observable 的函数，用于定义自定义策略。然后，service worker 将在 Observable 发出其第一个值时进行注册。</li>
+</ul>
+<p>举例来说，如果您需要在2秒后注册 Service Worker:<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">providers: [</span><br><span class="line">  ServiceWorkerModule.register(<span class="string">'/ngsw-worker.js'</span>, &#123;</span><br><span class="line">    enabled: environment.production,</span><br><span class="line">    registrationStrategy: <span class="string">'registerDelay:2000'</span></span><br><span class="line">  &#125;),</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h3 id="Bypass-a-Service-Worker"><a href="#Bypass-a-Service-Worker" class="headerlink" title="Bypass a Service Worker"></a>Bypass a Service Worker</h3><p>现在还可以通过添加 <code>ngsw-bypass</code> 请求头绕过 Service Worker 以获取特定请求。<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.http.get(<span class="string">'api/users'</span>, &#123; headers: &#123; <span class="string">'ngsw-bypass'</span>: <span class="literal">true</span> &#125; &#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="Multiple-apps-on-sub-domains"><a href="#Multiple-apps-on-sub-domains" class="headerlink" title="Multiple apps on sub-domains"></a>Multiple apps on sub-domains</h3><p>之前，在同一个域的不同子路径上运行多个使用 <code>@angular/service-worker</code> 的应用程序是完全不可能的，因为每个 Service Worker 都会覆盖其他的缓存， Emmmm…，现在这个问题已经修复了！</p>
+<h2 id="值得注意的重大更新"><a href="#值得注意的重大更新" class="headerlink" title="值得注意的重大更新"></a>值得注意的重大更新</h2><p>有一些变化需要你做一些准备工作。一些变化是由 Ivy 驱动的，并且是为了让我们的应用程序做好准备。但很酷的消息是，Angular 团队已经编写了 <code>schematics</code>，以使我们更轻松的应对这些变化。</p>
+<p>只需运行 <code>ng update @angular/core</code>，<code>schematics</code> 将更新您的代码。都有哪些变化呢，我们来看看吧！</p>
+<h3 id="Queries-timing"><a href="#Queries-timing" class="headerlink" title="Queries timing"></a>Queries timing</h3><p><code>ViewChild</code>和<code>ContentChild</code>装饰器现在必须有一个名为<code>static</code>的新选项。让我用一个使用<code>ViewChild</code>的非常简单的例子来解释原因：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> #<span class="attr">dynamicDiv</span>&gt;</span>dynamic<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>让我们在组件中获取该元素，并在生命周期钩子函数 <code>ngOnInit</code> 和 <code>ngAfterViewInit</code> 中输出到日志：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ViewChild</span>(<span class="string">'dynamicDiv'</span>) dynamicDiv: ElementRef&lt;HTMLDivElement&gt;;</span><br><span class="line"></span><br><span class="line">ngOnInit() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'init dynamic'</span>, <span class="keyword">this</span>.dynamicDiv); <span class="comment">// undefined</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ngAfterViewInit() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'after view init dynamic'</span>, <span class="keyword">this</span>.dynamicDiv); <span class="comment">// div</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在模板初始化完成时调用 <a href="https://angular.io/api/core/AfterViewInit" target="_blank" rel="noopener">AfterViewInit</a> 时有 <code>dynamicDiv</code> 是有意义的。</p>
+<p>但实际上，如果查询的元素是静态的（不包含在<code>ngIf</code>或<code>ngFor</code>中），那么它也可以在<code>ngOnInit</code>中使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> #<span class="attr">staticDiv</span>&gt;</span>static<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>和:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ViewChild</span>(<span class="string">'staticDiv'</span>) staticDiv: ElementRef&lt;HTMLDivElement&gt;;</span><br><span class="line"></span><br><span class="line">ngOnInit() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'init static'</span>, <span class="keyword">this</span>.staticDiv); <span class="comment">// div</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ngAfterViewInit() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'after view init static'</span>, <span class="keyword">this</span>.staticDiv); <span class="comment">// div</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然这并不推荐，但这就是目前的工作方式。<br>但是，在 Ivy 中，此类行为会变得更加一致：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ngOnInit() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'init static'</span>, <span class="keyword">this</span>.staticDiv); <span class="comment">// undefined (changed)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ngAfterViewInit() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'after view init static'</span>, <span class="keyword">this</span>.staticDiv); <span class="comment">// div</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>引入了一个新的静态标志，它不会破坏现有的应用程序，所以如果你想要保持老旧的行为，即使你切换到 Ivy，你也可以这么写：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ViewChild</span>(<span class="string">'static'</span>, &#123; <span class="keyword">static</span>: <span class="literal">true</span> &#125;) <span class="keyword">static</span>: ElementRef&lt;HTMLDivElement&gt;;</span><br></pre></td></tr></table></figure>
+<p>并且行为将与当前行为相同（该元素也可在<code>ngOnInit</code>中访问）。</p>
+<p>请注意，如果在动态元素上添加<code>static：true</code>（包含在条件或循环中），那么将导致它无法在<code>ngOnInit</code>和<code>ngAfterViewInit</code>中访问！</p>
+<p><code>static：false</code> 将是 Ivy 默认的行为方式。</p>
+<p>为了不破坏现有应用程序并简化升级，Angular 团队编写了一个自动分析应用程序并添加<code>static</code>标记的 schematic。它甚至提供两种策略：</p>
+<ul>
+<li>一个基于您的模板，这将确保您的应用程序可工作（因此它通常将查询标记为静态，即使它们不是）。您需要确定它是可以正常工作的，但如果您将静态元素包装在条件或循环中，您可能会遇到一些问题。</li>
+<li>一个基于您对查询的使用，这就更容易出错了（因为 schematic 很难弄明白），但如果不需要，则不会将查询标记为静态。 所以大多数查询都有<code>static：false</code>，这也将是Ivy中的默认值。</li>
+</ul>
+<p>运行更新时默认使用第一个策略，因为它是最安全的，但您可以使用<code>NG_STATIC_QUERY_USAGE_STRATEGY=true ng update</code>来尝试使用策略。</p>
+<p>您可以查看<a href="https://v8.angular.io/guide/static-query-migration" target="_blank" rel="noopener">官方指南</a>以获取更多信息。</p>
+<p>使用 <code>ng update</code> 升级时是这个样子的（在一个组件中出现故障）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">------ Static Query Migration ------</span><br><span class="line">With Angular version 8, developers need to</span><br><span class="line">explicitly specify the timing of ViewChild and</span><br><span class="line">ContentChild queries. Read more about this here:</span><br><span class="line">https://v8.angular.io/guide/static-query-migration</span><br><span class="line"></span><br><span class="line">Some queries could not be migrated automatically. Please go</span><br><span class="line">those manually and apply the appropriate timing.</span><br><span class="line">For more info on how to choose a flag, please see:</span><br><span class="line">https://v8.angular.io/guide/static-query-migration</span><br><span class="line">⮑   home/home.component.ts@43:3: undefined</span><br></pre></td></tr></table></figure></p>
+<p>请注意，这仅仅涉及到<code>ViewChild</code>和<code>ContentChild</code>，而不是<code>ViewChildren</code>和<code>ContentChildren</code>（它们将在 Ivy 和 View Engine 中以相同的方式工作）。</p>
+<h3 id="Template-variable-reassignment"><a href="#Template-variable-reassignment" class="headerlink" title="Template variable reassignment"></a>Template variable reassignment</h3><p>目前，在 View Engine 中，我们进行以下代码<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">  *<span class="attr">ngFor</span>=<span class="string">"let option of options"</span></span></span><br><span class="line"><span class="tag">  (<span class="attr">click</span>)=<span class="string">"option = 'newButtonText'"</span>&gt;</span>&#123;&#123; option &#125;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>他是可工作的。</p>
+<p>但在 Ivy 中，情况不再是这样了：不可能将值重新分配给模板变量（此处为<code>option</code>）。 要准备切换到 Ivy，当您升级到 Angular 8.0 时，schematic 会分析您的模板，如果是这种情况则会发出警告。</p>
+<p>然后，您必须手动修复它：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">  *<span class="attr">ngFor</span>=<span class="string">"let option of options; index as index"</span></span></span><br><span class="line"><span class="tag">  (<span class="attr">click</span>)=<span class="string">"options[index] = 'newButtonText'"</span>&gt;</span>&#123;&#123; option &#125;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="DOCUMENT"><a href="#DOCUMENT" class="headerlink" title="DOCUMENT"></a>DOCUMENT</h3><p>DOCUMENT 从 <code>@angular/platform-browser</code> 移动到 <code>@angular/common</code>。您可以在应用程序中手动更改它，时，提供的 schematic 也可以为您自动处理。</p>
+<h3 id="Deprecated-webworker-package"><a href="#Deprecated-webworker-package" class="headerlink" title="Deprecated webworker package"></a>Deprecated webworker package</h3><p><code>@angular/platform-webworker</code> 包启用了在 Web Worker 中运行 Angular 应用程序的特性。但这已经被证实比预期的结果要糟糕的多（用于构建应用程序，SEO……），而且性能也不是很好，因此该软件包已被弃用，在将来将被移除。</p>
+<h3 id="Deprecated-HTTP-package-removed"><a href="#Deprecated-HTTP-package-removed" class="headerlink" title="Deprecated HTTP package removed"></a>Deprecated HTTP package removed</h3><p><code>@angular/http</code> 在8.0中已经被移除，在18个月之前的<a href="https://blog.ninja-squad.com/2017/07/17/http-client-module/" target="_blank" rel="noopener">4.3中被<code>@angular/common/http</code>替换</a>，并在5.0中被正式弃用。您可能已经迁移到<code>@ angular/common/http</code>了，但如果没有，现在您可能必须要迁移了，提供的 schematic 会从 <code>package.json</code> 中删除依赖项。</p>
+<p>您还可以在<a href="https://angular.io/guide/deprecations" target="_blank" rel="noopener">官方弃用指南</a>中找到所有已弃用的API。</p>
+<p>这就是Angular 8.0的全部内容！ 您也可以查看我们其他一些关于<a href="https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/" target="_blank" rel="noopener">Ivy</a>，<a href="https://blog.ninja-squad.com/2019/05/29/angular-cli-8.0/" target="_blank" rel="noopener">CLI 8.0版本</a>或新 <a href="https://blog.ninja-squad.com/2019/05/14/build-your-angular-application-with-bazel/" target="_blank" rel="noopener">Bazel 支持</a>的相关文章。</p>
+<p>如果您想了解更多信息，我们所有的材料（<a href="https://books.ninja-squad.com/angular" target="_blank" rel="noopener">电子书</a>，<a href="https://angular-exercises.ninja-squad.com/" target="_blank" rel="noopener">在线教程</a>和<a href="https://ninja-squad.com/training/angular" target="_blank" rel="noopener">培训</a>）都会及时跟进这些变化！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>兜小神</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://douxiaoshen.online/2019/05/what-is-new-angular-8-0.html" title="Angular 8.0 有什么新功能?">https://douxiaoshen.online/2019/05/what-is-new-angular-8-0.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Angular/" rel="tag"># Angular</a>
+          
+            <a href="/tags/Angular-8/" rel="tag"># Angular 8</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/use-github-and-hexo-travisci-to-build-an-automated-blog-site-for-automated-builds.html" rel="next" title="使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点">
+                <i class="fa fa-chevron-left"></i> 使用Github和Hexo,Travis CI搭建自动化构建的独立博客站点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536601280165&di=5022d9a19b9e04762e1d846b0232cd6e&imgtype=0&src=http%3A%2F%2Fp1.gexing.com%2Ftouxiang%2F20121225%2F1728%2F50d971d6c1142_200x200_3.jpg%3Frecache%3D20131108" alt="兜小神">
+            
+              <p class="site-author-name" itemprop="name">兜小神</p>
+              <div class="site-description motion-element" itemprop="description">随便记录一些容易忘记的事情</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://y2zz.info/" title="https://y2zz.info/" rel="noopener" target="_blank">Y2zz</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TypeScript-3-4"><span class="nav-number">1.</span> <span class="nav-text">TypeScript 3.4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ivy"><span class="nav-number">2.</span> <span class="nav-text">Ivy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bazel-support"><span class="nav-number">3.</span> <span class="nav-text">Bazel support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forms"><span class="nav-number">4.</span> <span class="nav-text">Forms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#markAllAsTouched"><span class="nav-number">4.1.</span> <span class="nav-text">markAllAsTouched</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FormArray-clear"><span class="nav-number">4.2.</span> <span class="nav-text">FormArray.clear</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Router"><span class="nav-number">5.</span> <span class="nav-text">Router</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-import-语法的延迟加载"><span class="nav-number">5.1.</span> <span class="nav-text">使用 import() 语法的延迟加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Location"><span class="nav-number">6.</span> <span class="nav-text">Location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Service-worker"><span class="nav-number">7.</span> <span class="nav-text">Service worker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Registration-strategy"><span class="nav-number">7.1.</span> <span class="nav-text">Registration strategy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bypass-a-Service-Worker"><span class="nav-number">7.2.</span> <span class="nav-text">Bypass a Service Worker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-apps-on-sub-domains"><span class="nav-number">7.3.</span> <span class="nav-text">Multiple apps on sub-domains</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#值得注意的重大更新"><span class="nav-number">8.</span> <span class="nav-text">值得注意的重大更新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Queries-timing"><span class="nav-number">8.1.</span> <span class="nav-text">Queries timing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Template-variable-reassignment"><span class="nav-number">8.2.</span> <span class="nav-text">Template variable reassignment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOCUMENT"><span class="nav-number">8.3.</span> <span class="nav-text">DOCUMENT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deprecated-webworker-package"><span class="nav-number">8.4.</span> <span class="nav-text">Deprecated webworker package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deprecated-HTTP-package-removed"><span class="nav-number">8.5.</span> <span class="nav-text">Deprecated HTTP package removed</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">兜小神</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">12k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">11 分钟</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+
+
+  <script>
+    var _mtac = {};
+    (function() {
+      var mta = document.createElement("script");
+      mta.src = "https://pingjs.qq.com/h5/stats.js";
+      mta.setAttribute("name", "MTAH5");
+      mta.setAttribute("sid", "500641720");
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(mta, s);
+    })();
+  </script>
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66008202";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script src="//cdn.bootcss.com/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script src="//cdn.bootcss.com/velocity/1.2.1/velocity.ui.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'S2EtOuSnjKdkba30qgoaFA9v-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'S2EtOuSnjKdkba30qgoaFA9v-gzGzoHsz',
+                'X-LC-Key': '209BiTzJXHlUQOokG7Cj7q7c',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
